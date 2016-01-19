@@ -40,6 +40,8 @@
 
      Route::get('/index',['as' => 'web.index', 'uses' => 'HomeController@index']);
 
+     Route::get('/index',['as' => 'home.index', 'uses' => 'HomeController@index']);
+
      Route::get('/Manage/Index',['as' => 'manage.index','uses' => 'ManageController@index']);
 
 
@@ -81,7 +83,13 @@
      Route::get('/Manage/CategoriesAuthDel',['as' => 'manage.categoriesAuthDel','uses' => 'ManageController@CategoriesAuthDoDel']);    
 
      //看板
-     Route::get('/Home/Record/{id}',['as' => 'home.recordIndex','uses' => 'HomeController@RecordIndex']);
-     Route::get('/Home/Posts/{id}',['as' => 'home.postsIndex','uses' => 'HomeController@PostsIndex']);
+     Route::get('/Record/Index/{id}',['as' => 'record.index','uses' => 'RecordController@Index']);
+     Route::get('/Record/show/{id}',['as' => 'record.show','uses' => 'RecordController@show']);
+     Route::get('/Record/Create/{id}',['as' => 'record.create', 'uses' => 'RecordController@Create']);
+     Route::post('/Record/Create',['as' => 'record.create' , 'uses' => 'RecordController@CreateDoAdd']);
+     Route::get('/Record/Edit/{id}',['as' => 'record.edit', 'uses' => 'RecordController@edit']);
+     Route::post('/Record/Edit',['as' => 'record.edit' , 'uses' => 'RecordController@Doedit']);
+     Route::get('/Record/Del',['as' => 'record.del' , 'uses' => 'RecordController@DoDel']);
 
+     Route::get('/Posts/{id}',['as' => 'posts.index','uses' => 'PostsController@Index']);
  }); 

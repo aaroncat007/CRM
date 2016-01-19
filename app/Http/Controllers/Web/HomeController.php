@@ -27,7 +27,7 @@ class HomeController extends Controller
 
     public function RecordIndex()
     {
-
+        return view('RecordIndex');
     }
 
     public function PostsIndex()

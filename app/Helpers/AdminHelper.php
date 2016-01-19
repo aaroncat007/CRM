@@ -75,8 +75,8 @@ if(! function_exists('getFourmList')){
                   //子類別
                 $sidebar .= '<li><a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-arrow-right"></i> '.$data->title.' <span class="fa fa-chevron-down"></span></a>';
                 $sidebar .= '<ul class="nav child_menu" style="display: none">';
-                $sidebar .= '<li><a href="'.route('home.recordIndex').'/'.$data->id.'">紀錄</a></li>';
-                $sidebar .= '<li><a href="'.route('home.postsIndex').'/'.$data->id.'">討論區</a></li>';
+                $sidebar .= '<li><a href="'.route('record.index',$data->id).'">紀錄</a></li>';
+                $sidebar .= '<li><a href="'.route('posts.index',$data->id).'">討論區</a></li>';
                 $sidebar .= '</ul>';
                 $sidebar .= '</li>';
               }
@@ -98,11 +98,11 @@ if(! function_exists('getFourmList')){
                   $sidebar .= '<li><a>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-arrow-right"></i> '.$data->title.' <span class="fa fa-chevron-down"></span></a>';
                   $sidebar .= '<ul class="nav child_menu" style="display: none">';
                   if($Auth->record == true){
-                    $sidebar .= '<li><a href="'.route('home.recordIndex').'/'.$data->id.'">紀錄</a></li>';
+                    $sidebar .= '<li><a href="'.route('record.index',$data->id).'">紀錄</a></li>';
                   }
 
                   if($Auth->posts == true){
-                    $sidebar .= '<li><a href="'.route('home.postsIndex').'/'.$data->id.'">討論區</a></li>';
+                    $sidebar .= '<li><a href="'.route('posts.index',$data->id).'">討論區</a></li>';
                   }   
                   $sidebar .= '</ul>';
                   $sidebar .= '</li>';
