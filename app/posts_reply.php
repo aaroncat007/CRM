@@ -17,6 +17,13 @@ class posts_reply extends Model
     protected $table = 'posts_reply';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['posts_id', 'user_id','content'];
+
+    /**
      * 需要被轉換成日期的屬性。
      *
      * @var array
@@ -25,11 +32,11 @@ class posts_reply extends Model
 
 
     public function User(){
-    	return $this->belongTo('App\User');
+    	return $this->belongsTo('App\User');
     }
 
     public function posts(){
-    	return $this->belongTo('App\posts');
+    	return $this->belongsTo('App\posts');
     }
 
     public function posts_read(){

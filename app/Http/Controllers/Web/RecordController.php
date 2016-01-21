@@ -126,7 +126,7 @@ class RecordController extends Controller
                     'categories_id'=>  $cate_id,
                     'user_id'     =>  $user->id,
                     'title'  =>  $title,
-                    'content' => $content
+                    'content' => htmlentities($content)
                 ];
 
                 $ins = \App\record::create($data);

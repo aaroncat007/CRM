@@ -16,6 +16,14 @@ class posts extends Model
      */
     protected $table = 'posts';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['categories_id', 'user_id', 'subject','content'];
+
+
         /**
      * 需要被轉換成日期的屬性。
      *
@@ -24,11 +32,11 @@ class posts extends Model
     protected $dates = ['deleted_at'];
 
     public function User(){
-    	return $this->belongTo('App\User');
+    	return $this->belongsTo('App\User');
     }
 
     public function categories(){
-    	return $this->belongTo('App\categories');
+    	return $this->belongsTo('App\categories');
     }
 
     public function posts_reply(){

@@ -83,7 +83,7 @@
      Route::get('/Manage/CategoriesAuthDel',['as' => 'manage.categoriesAuthDel','uses' => 'ManageController@CategoriesAuthDoDel']);    
 
      //看板
-     Route::get('/Record/Index/{id}',['as' => 'record.index','uses' => 'RecordController@Index']);
+     Route::get('/Record/Index/{id?}',['as' => 'record.index','uses' => 'RecordController@Index']);
      Route::get('/Record/show/{id}',['as' => 'record.show','uses' => 'RecordController@show']);
      Route::get('/Record/Create/{id}',['as' => 'record.create', 'uses' => 'RecordController@Create']);
      Route::post('/Record/Create',['as' => 'record.create' , 'uses' => 'RecordController@CreateDoAdd']);
@@ -91,5 +91,18 @@
      Route::post('/Record/Edit',['as' => 'record.edit' , 'uses' => 'RecordController@Doedit']);
      Route::get('/Record/Del',['as' => 'record.del' , 'uses' => 'RecordController@DoDel']);
 
-     Route::get('/Posts/{id}',['as' => 'posts.index','uses' => 'PostsController@Index']);
+     Route::get('/Posts/Index/{id?}',['as' => 'posts.index','uses' => 'PostsController@Index']);
+     Route::get('/Posts/show/{id}',['as' => 'posts.show','uses' => 'PostsController@show']);
+     Route::get('/Posts/Create/{id}',['as' => 'posts.create', 'uses' => 'PostsController@Create']);
+     Route::post('/Posts/Create',['as' => 'posts.create' , 'uses' => 'PostsController@CreateDoAdd']);
+     Route::get('/Posts/Edit/{id}',['as' => 'posts.edit', 'uses' => 'PostsController@edit']);
+     Route::post('/Posts/Edit',['as' => 'posts.edit' , 'uses' => 'PostsController@Doedit']);
+     Route::get('/Posts/Del',['as' => 'posts.del' , 'uses' => 'PostsController@DoDel']);
+
+     Route::get('/Posts/reply/Add/{id}',['as' => 'posts.reply.add','uses' => 'PostsController@ReplyAdd']);
+     Route::post('/Posts/reply/Add',['as' => 'posts.reply.add' , 'uses' => 'PostsController@ReplyDoAdd']);
+     Route::get('/Posts/reply/Edit/{id}',['as' => 'posts.reply.edit' , 'uses' => 'PostsController@ReplyEdit']);
+     Route::post('/Posts/reply/Edit',['as' => 'posts.reply.edit' , 'uses' => 'PostsController@ReplyDoedit']);
+     Route::get('/Posts/reply/Del',['as' => 'posts.reply.del' , 'uses' => 'PostsController@ReplyDel']);
+
  }); 

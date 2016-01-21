@@ -55,6 +55,8 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
+                        <!-- 顯示驗證錯誤 -->
+            @include('include.errors')
             <br>
             {!! Form::open(array('route' => 'record.create','id' => 'AddForm','class'=>'form-horizontal form-label-left')) !!}
                 
@@ -79,6 +81,7 @@
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
                             <button id="btn-submit" class="btn btn-success" type="submit">儲存</button>
+                            <button id="btn-exit" class="btn btn-danger" type="submit" onclick="javascript:location.back();">放棄</button>
                         </div>
                     </div>
 

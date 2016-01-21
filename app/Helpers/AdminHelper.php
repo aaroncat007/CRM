@@ -36,18 +36,23 @@ if ( ! function_exists('breadcrumbs'))
      $index = substr($route, 0, strrpos($route, '.') + 1) . 'index';  
      $breadcrumbs = '<ol class="breadcrumb">';  
      $breadcrumbs .= '<li><i class="fa fa-home"></i> <a href="'.route('web.index').'">首頁</a></li>';  
+
      // if not admin root  
      if(strpos($route, 'root') === false)
      {  
-       $breadcrumbs .= strpos($route, 'index') !== false ? '<li class="active">' : '<li>';  
-       $parent_text  = strpos($route, 'index') !== false ? trans($route) : trans($index);  
-       $breadcrumbs .= strpos($route, 'index') !== false ? $parent_text : '<a href="'.route($index).'">'.$parent_text.'</a>';  
-       $breadcrumbs .= '</li>';  
+      if(Route::has($index)){
+         $breadcrumbs .= strpos($route, 'index') !== false ? '<li class="active">' : '<li>';  
+         $parent_text  = strpos($route, 'index') !== false ? trans($route) : trans($index);  
+         $breadcrumbs .= strpos($route, 'index') !== false ? $parent_text : '<a href="'.route($index).'">'.$parent_text.'</a>';  
+         $breadcrumbs .= '</li>';  
+       }
        if(strpos($route, 'index') === false)  
        {  
          $breadcrumbs .= '<li class="active">'.trans($route).'</li>';  
        }  
      }  
+
+
      $breadcrumbs .= '</ol>';  
      return $breadcrumbs;  
    }  

@@ -30,6 +30,7 @@ class Forum extends Migration
             $table->increments('id');
             $table->integer('categories_id')->unsigned();
             $table->integer('user_id')->unsigned();
+            $table->string('subject')->nullable();
             $table->longText('content')->nullable();
             $table->softDeletes(); //軟刪除
             $table->timestamps();

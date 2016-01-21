@@ -20,7 +20,10 @@ class DatabaseSeeder extends Seeder
         // $this->call(SysInfoSeeder::class);
         // $this->call(categoriesSeeder::class);
          
-         $this->call(RecordSeeder::class);
+         //$this->call(RecordSeeder::class);
+         
+         $this->call(PostTableSeeder::class);
+         
 
         Model::reguard();
     }

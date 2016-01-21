@@ -12,7 +12,7 @@
         <h3>
             {{ $cateParents->title }} - {{ $cateInfo->title }}
             <small>
-            {{ trans('record.edit') }}
+            {{ trans('posts.edit') }}
             </small>
         </h3>
     </div>
@@ -55,22 +55,20 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                        <!-- 顯示驗證錯誤 -->
-            @include('include.errors')
             <br>
-            {!! Form::open(array('route' => 'record.edit','id' => 'AddForm','class'=>'form-horizontal form-label-left')) !!}
+            {!! Form::open(array('route' => 'posts.edit','id' => 'AddForm','class'=>'form-horizontal form-label-left')) !!}
                 
                 {!! Form::hidden('id',$data->id) !!}
                 <div class="form-group">
-                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="title">{{trans('record.Input_title')}}<span class="required">*</span>
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="title">{{trans('posts.Input_title')}}<span class="required">*</span>
                     </label>
                     <div class="col-md-10 col-sm-10 col-xs-12">
-                        <input class="form-control col-md-7 col-xs-12" id="title" name="title" required="required" type="text" data-parsley-id="7614" value="{{$data->title}}"><ul class="parsley-errors-list" id="parsley-id-7614"></ul>
+                        <input class="form-control col-md-7 col-xs-12" id="title" name="title" required="required" type="text" data-parsley-id="7614" value="{{$data->subject}}"><ul class="parsley-errors-list" id="parsley-id-7614"></ul>
                     </div>
                 </div>
 
                <div class="form-group">
-                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">{{trans('record.Input_content')}}<span class="required">*</span>
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="content">{{trans('posts.Input_content')}}<span class="required">*</span>
                     </label>
                     <div class="col-md-10 col-sm-10 col-xs-12">
                         <textarea class="form-control col-md-7 col-xs-12" id="content" name="content" required="required" type="text" data-parsley-id="7614" rows="80" cols="20">{!! ($data->content) !!}</textarea><ul class="parsley-errors-list" id="parsley-id-7614"></ul>
