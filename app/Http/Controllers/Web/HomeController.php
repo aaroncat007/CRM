@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Sentinel;
+use Activation;
+use Illuminate\Support\Facades\Input;
 
 class HomeController extends Controller
 {
+    private $user;
 
     function __construct(){
         $this->middleware('auth');
+        $this->user = Sentinel::getUser();
     }
 
     /**
@@ -25,80 +30,30 @@ class HomeController extends Controller
     }
 
 
-    public function RecordIndex()
+    public function ProfileIndex()
     {
-        return view('RecordIndex');
+        return view('profileIndex',['data' => $this->user]);
     }
 
-    public function PostsIndex()
+    public function profileEdit()
     {
+        $uid    = Input::get('uid');
+        $pwd    = Input::get('password');
+        $repwd  = Input::get('repassword');
 
-    }
+        if($pwd != $repwd)
+        {
+            return back()->withInput()->withErrors('密碼不相符');
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $update = [
+            'password' => $pwd
+        ];
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        //修改密碼
+        Sentinel::update($this->user,$update);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return back()->with('msg','密碼修改成功');
     }
 }
 

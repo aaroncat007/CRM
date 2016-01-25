@@ -31,5 +31,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'superadmin' => \App\Http\Middleware\SentinelSuperAdminAccess::class,
         'admin' => \App\Http\Middleware\SentinelAdminAccess::class,
+        'ManageAccess' => \App\Http\Middleware\SentinelManageAccess::class,
     ];
 }

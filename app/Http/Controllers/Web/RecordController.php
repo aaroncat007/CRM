@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Input;
 class RecordController extends Controller
 {
 
+    private $user;
+
     /**
      * Display a listing of the resource.
      *
@@ -24,33 +26,30 @@ class RecordController extends Controller
             return redirect()->route('web.index');
         }
 
-        if(Sentinel::check()){
-            if($user = Sentinel::getUser())
-            {
+        if($this->AuthAccess($id)){
 
-                $cateInfo = \App\categories::find($id);
+            $cateInfo = \App\categories::find($id);
 
-                if(!isset($cateInfo)){
-                    return redirect()->route('web.index');
-                }
-
-                $cateParents = \App\categories::where('id',$cateInfo->parent_categories)->select('title')->first();
-
-                $data = \App\Record::where('categories_id',$id)
-                                    ->where('user_id',$user->id)
-                                    ->select('id','title','content','updated_at')
-                                    ->get();
-
-                foreach ($data as $d) {
-                    $d->content = mb_substr(strip_tags($d->content),0,100);
-                }
-
-                return view('RecordIndex',['cateInfo' => $cateInfo,'cateParents' => $cateParents,'data' => $data]);
+            if(!isset($cateInfo)){
+                return redirect()->route('web.index');
             }
+
+            $cateParents = \App\categories::where('id',$cateInfo->parent_categories)->select('title')->first();
+
+            $data = \App\Record::where('categories_id',$id)
+                                ->where('user_id',$this->user->id)
+                                ->select('id','title','content','updated_at')
+                                ->get();
+
+            foreach ($data as $d) {
+                $d->content = mb_substr(strip_tags($d->content),0,100);
+            }
+
+            return view('record.RecordIndex',['cateInfo' => $cateInfo,'cateParents' => $cateParents,'data' => $data]);
+            
         }
 
-
-        return redirect()->route('web.index');
+        return redirect()->route('web.index')->withErrors('您沒有權限存取此類別');
     }
 
     /**
@@ -65,19 +64,16 @@ class RecordController extends Controller
             return view('RecordPartial');
         }
 
-        if(Sentinel::check()){
-            if($user = Sentinel::getUser())
-            {
+        if($this->AuthAccess($id)){
 
-                $data = \App\Record::where('id',$id)
-                                    ->where('user_id',$user->id)
-                                    ->first();
+            $data = \App\Record::where('id',$id)
+                                ->where('user_id',$this->user->id)
+                                ->first();
 
-                return view('RecordPartial',['data' => $data]);
-            }
+            return view('record.RecordPartial',['data' => $data]);
         }
 
-        return view('RecordPartial');
+        return view('record.RecordPartial')->withErrors('您沒有權限存取此類別');
     }
 
     /**
@@ -88,7 +84,11 @@ class RecordController extends Controller
     public function create($id)
     {
         if(!isset($id)){
-            return redirect()->route('web.index');
+            return redirect()->back()->withErrors('查無此類別');
+        }
+
+        if(!$this->AuthAccess($id)){
+            return redirect()->back()->withErrors('您沒有權限存取此類別');
         }
 
         $cateInfo = \App\categories::find($id);
@@ -99,7 +99,7 @@ class RecordController extends Controller
 
         $cateParents = \App\categories::where('id',$cateInfo->parent_categories)->select('title')->first();
 
-        return view('RecordCreate',['cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
+        return view('record.RecordCreate',['cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
 
     }
 
@@ -107,40 +107,37 @@ class RecordController extends Controller
     public function CreateDoAdd()
     {
 
-        if(Sentinel::check()){
-            if($user = Sentinel::getUser())
-            {
-
-                $cate_id  = Input::get('cate_id');
-                $title   = Input::get('title');
-                $content    = Input::get('content');
+        $cate_id  = Input::get('cate_id');
+        $title   = Input::get('title');
+        $content    = Input::get('content');
 
 
-                $cateInfo = \App\categories::find($cate_id);
+        if($this->AuthAccess($cate_id)){
 
-                if(!isset($cateInfo)){
-                    return back()->withInput();
-                }
+            $cateInfo = \App\categories::find($cate_id);
 
-                $data = [
-                    'categories_id'=>  $cate_id,
-                    'user_id'     =>  $user->id,
-                    'title'  =>  $title,
-                    'content' => htmlentities($content)
-                ];
-
-                $ins = \App\record::create($data);
-
-                if(isset($ins)){
-                    return redirect()->route('record.index',$cate_id);
-                }else{
-                    return back()->withInput();
-                }
+            if(!isset($cateInfo)){
+                return back()->withInput()->withErrors('查無此資料');
             }
+
+            $data = [
+                'categories_id'=>  $cate_id,
+                'user_id'     =>  $this->user->id,
+                'title'  =>  $title,
+                'content' => htmlentities($content)
+            ];
+
+            $ins = \App\record::create($data);
+
+            if(isset($ins)){
+                return redirect()->route('record.index',$cate_id);
+            }else{
+                return back()->withInput();
+            }
+            
         }
 
-        return back()->withInput();
-
+        return back()->withInput()->withErrors('您沒有權限存取此類別');
 
     }
 
@@ -156,22 +153,32 @@ class RecordController extends Controller
         if(!isset($id)){
             return back();
         }
-        if(Sentinel::check()){
-            if($user = Sentinel::getUser())
-            {
-                $data = \App\Record::where('id',$id)->where('user_id',$user->id)->first();
 
-                $cateInfo = $data->categories;
+        $data = \App\Record::where('id',$id)->first();
 
-                if(!isset($cateInfo)){
-                    return back();
-                }
-
-                $cateParents = \App\categories::where('id',$data->categories->parent_categories)->select('title')->first();
-
-                return view('RecordEdit',['data' => $data,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
-            }
+        if(!isset($data)){
+            return back()->withInput()->withErrors('查無此資料');
         }
+
+        if($this->AuthAccess($data->categories_id)){
+            
+            if($data->user_id != $this->user->id)
+            {
+                return back()->withInput()->withErrors('您不是作者，沒有權限修改');
+            }
+
+            $cateInfo = $data->categories;
+
+            if(!isset($cateInfo)){
+                return back()->withInput()->withErrors('發生錯誤，請重試');
+            }
+
+            $cateParents = \App\categories::where('id',$data->categories->parent_categories)->select('title')->first();
+
+            return view('record.RecordEdit',['data' => $data,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
+        }
+
+        return back()->withInput()->withErrors('您沒有權限存取此類別');
     }
 
     /**
@@ -187,24 +194,28 @@ class RecordController extends Controller
         $title   = Input::get('title');
         $content    = Input::get('content');
 
-        if(Sentinel::check()){
-            if($user = Sentinel::getUser())
-            {
-                $data = \App\Record::where('id',$id)->where('user_id',$user->id)->first();
+        $data = \App\Record::where('id',$id)->first();
 
-                if(!isset($data)){
-                    return back()->withInput();
-                }
-
-                $data->title = $title;
-                $data->content = $content;
-
-                $data->save();
-
-                return redirect()->route('record.index',$data->categories_id);
-            }
+        if(!isset($data)){
+            return back()->withInput()->withErrors('查無此資料');
         }
-        return back();
+
+        if($this->AuthAccess($data->categories_id)){
+
+            if($data->user_id != $this->user->id)
+            {
+                return back()->withInput()->withErrors('您不是作者，沒有權限修改');
+            }
+
+            $data->title = $title;
+            $data->content = $content;
+
+            $data->save();
+
+            return redirect()->route('record.index',$data->categories_id);
+            
+        }
+        return back()->withInput()->withErrors('您沒有權限存取此類別');
     }
 
     /**
@@ -216,23 +227,54 @@ class RecordController extends Controller
     public function DoDel()
     {
         $id = Input::get('id');
-        if(Sentinel::check()){
-            if($user = Sentinel::getUser())
-            {
-                $data = \App\Record::where('id',$id)->first();
-                if(!isset($data)){
-                    return Response()->json(['success' => false,'message' =>'查無此紀錄']);
-                }
 
-                if($data->user_id != $user->id){
-                    return Response()->json(['success' => false,'message' =>'您沒有權限']);
-                }
+        $data = \App\Record::where('id',$id)->first();
+        if(!isset($data)){
+            return Response()->json(['success' => false,'message' =>'查無此紀錄']);
+        }
 
-                $data->delete();
-                return Response()->json(['success' => true,'message' =>'成功移除']);
+        if($this->AuthAccess($data->categories_id)){
+
+            if($data->user_id != $user->id){
+                return Response()->json(['success' => false,'message' =>'您沒有權限']);
             }
+
+            $data->delete();
+            return Response()->json(['success' => true,'message' =>'成功移除']);
+            
         }
 
         return Response()->json(['success' => false,'message' =>'您沒有權限']);
+    }
+
+
+
+    private function AuthAccess($cate_id){
+        if(Sentinel::check()){
+            if($this->user = Sentinel::getUser())
+            {
+                //管理員身份
+                if(Sentinel::inRole('SuperAdmin') || Sentinel::inRole('Admin'))
+                {
+                    return true;
+                }
+                else//其他身份
+                {        
+                    $data = \App\categories_auth::where('categories_id',$cate_id)
+                                                ->where('user_id',$this->user->id)
+                                                ->first();
+
+                    if(!isset($data)){
+                        return false;
+                    }
+
+                    $AuthList = json_decode($data->permissions);
+                    if($AuthList->get('record') == true){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

@@ -36,7 +36,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>系統維護 <small></small></h2>
+                <h2>系統參數 <small></small></h2>
 
                     <ul class="nav navbar-right panel_toolbox">
                     
@@ -57,6 +57,35 @@
 
                 <div class="clearfix"></div>
             </div>
+
+            <div class="x_content">
+            <table id="example" class="table responsive-utilities jambo_table">
+                <thead>
+                    <tr class="headings">
+                        <th>
+                            <!--<input type="checkbox" class="tableflat">-->
+                            #
+                        </th>
+                        <th>名稱</th>
+                        <th>值</th>
+                        <th>更新時間</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php $count = 1; ?>
+                    @foreach ($data as $d)
+                        <tr class="odd pointer">
+                            <td class="a-center ">{{ $count }}</td>
+                            <td class=" ">{{ $d->Name }}</td>
+                            <td class=" ">{{ $d->value }}</td>
+                            <td class=" ">{{ $d->updated_at }}</td>
+                        </tr>
+                    <?php $count++ ?>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
         </div>
     </div>
 

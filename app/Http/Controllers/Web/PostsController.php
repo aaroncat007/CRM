@@ -34,7 +34,7 @@ class PostsController extends Controller
 
             $data = \App\posts::where('categories_id',$id)->get();
 
-            return view('PostsIndex',['cateInfo' => $cateInfo,'cateParents' => $cateParents,'data' => $data]);
+            return view('posts.PostsIndex',['cateInfo' => $cateInfo,'cateParents' => $cateParents,'data' => $data]);
         }
 
         return redirect()->route('web.index');
@@ -68,7 +68,7 @@ class PostsController extends Controller
 
         $cateParents = \App\categories::where('id',$data->categories->parent_categories)->select('title')->first();
 
-        return view('PostsShow',['userID' => $this->user->id,'data' => $data,'reply' => $reply,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
+        return view('posts.PostsShow',['userID' => $this->user->id,'data' => $data,'reply' => $reply,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
     }
 
     /**
@@ -94,7 +94,7 @@ class PostsController extends Controller
 
         $cateParents = \App\categories::where('id',$cateInfo->parent_categories)->select('title')->first();
 
-        return view('PostsCreate',['cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
+        return view('posts.PostsCreate',['cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
 
     }
 
@@ -160,7 +160,7 @@ class PostsController extends Controller
 
         $cateParents = \App\categories::where('id',$data->categories->parent_categories)->select('title')->first();
 
-        return view('PostsEdit',['data' => $data,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
+        return view('posts.PostsEdit',['data' => $data,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
     }
 
     /**
@@ -260,7 +260,7 @@ class PostsController extends Controller
 
         $cateParents = \App\categories::where('id',$cateInfo->parent_categories)->select('title')->first();
 
-        return view('PostsReplyCreate',['post' => $post,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
+        return view('posts.PostsReplyCreate',['post' => $post,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
     }
 
 
@@ -330,7 +330,7 @@ class PostsController extends Controller
 
         $cateParents = \App\categories::where('id',$cateInfo->parent_categories)->select('title')->first();
 
-        return view('PostsReplyEdit',['data' => $data,'post' => $post,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
+        return view('posts.PostsReplyEdit',['data' => $data,'post' => $post,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
     }
 
     /**

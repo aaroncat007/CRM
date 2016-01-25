@@ -12,3 +12,8 @@
         </ul>
     </div>
 @endif
+
+@if(Session::has('msg'))
+    <!--訊息提示-->
+    <div class="alert alert-info">{{ Session::get('msg') }}</div>
+@endif

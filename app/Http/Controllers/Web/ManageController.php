@@ -15,7 +15,8 @@ class ManageController extends Controller
 
     public function index()
     {
-        return view('manage.index');
+        $Info = \App\SySInfo::get();
+        return view('manage.index',['data' => $Info]);
     }
 
     /**
