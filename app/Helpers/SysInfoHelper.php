@@ -34,4 +34,37 @@ if ( ! function_exists('webInfo'))
 }  
 
 
+if( ! function_exists('getUserimg'))
+{
+
+    function getUserimg($uid) 
+    { 
+
+        $str = mb_substr(getUserName($uid), 0,1);
+
+        $filePath = 'images/icon/'.$uid.'.png';
+
+        $savePath = public_path($filePath);
+
+        if(!File::exists($savePath)){
+            
+            $img = Image::canvas(125,125,'#D8DBE2');
+
+            $img->text($str,60,60,function($font){
+                $font->file(public_path().'/fonts/sp-setofont.ttf');
+                $font->size(108);
+                $font->color('#0000ff');
+                $font->align('center');
+                $font->valign('middle');
+            });
+
+           $img->save($savePath);
+
+        }
+
+        // output
+        return $filePath;
+    } 
+}
+
 ?>

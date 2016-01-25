@@ -7,19 +7,48 @@
     */  
  if( ! function_exists('getUserName'))
  {
- 	function getUserName()
+ 	function getUserName($uid = NULL)
  	{
- 		if(Sentinel::check())
- 		{
- 			if($user = Sentinel::getUser())
- 			{
- 				return $user->first_name . $user->last_name ;
- 			}
- 		}
-
- 		return '';
+    if(!isset($uid))
+    {
+   		if(Sentinel::check())
+   		{
+   			if($user = Sentinel::getUser())
+   			{
+   				return $user->first_name . $user->last_name ;
+   			}
+   		}
+    }
+    else
+    {
+      $userData = Sentinel::findById($uid);
+      return $userData->first_name . $userData->last_name;
+    }
  	}
  }
+
+   /**  
+  * Return User ID  
+  *  
+  * @return string  
+  */  
+ if( ! function_exists('getUserID'))
+ {
+  function getUserID()
+  {
+    if(Sentinel::check())
+    {
+      if($user = Sentinel::getUser())
+      {
+        return $user->id ;
+      }
+    }
+
+    return '';
+  }
+ }
+
+
 
 
    /**  

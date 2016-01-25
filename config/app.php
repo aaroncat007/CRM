@@ -152,6 +152,7 @@ return [
          */
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class, //auth模組
         Barryvdh\Debugbar\ServiceProvider::class,  //debug模組
+        Intervention\Image\ImageServiceProvider::class, //圖片模組
 
     ],
 
@@ -206,6 +207,7 @@ return [
         'Debugbar'  => Barryvdh\Debugbar\Facade::class,  
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
+        'Image'     => Intervention\Image\Facades\Image::class,
 
     ],
 

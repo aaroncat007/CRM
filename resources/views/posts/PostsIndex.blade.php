@@ -70,6 +70,8 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
+                                            <!-- 顯示驗證錯誤 -->
+            @include('include.errors')
             <table id="example" class="table table-striped responsive-utilities jambo_table">
 
                 <thead>

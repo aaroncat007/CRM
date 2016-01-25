@@ -55,6 +55,8 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
+                                    <!-- 顯示驗證錯誤 -->
+            @include('include.errors')
             <br>
             {!! Form::open(array('route' => 'posts.create','id' => 'AddForm','class'=>'form-horizontal form-label-left')) !!}
                 

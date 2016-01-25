@@ -15,6 +15,8 @@ class RecordController extends Controller
 
     private $user;
 
+    private $categories;
+
     /**
      * Display a listing of the resource.
      *
@@ -39,6 +41,7 @@ class RecordController extends Controller
             $data = \App\Record::where('categories_id',$id)
                                 ->where('user_id',$this->user->id)
                                 ->select('id','title','content','updated_at')
+                                ->orderBy('created_at', 'desc')
                                 ->get();
 
             foreach ($data as $d) {
@@ -250,6 +253,7 @@ class RecordController extends Controller
 
 
     private function AuthAccess($cate_id){
+        $this->categories = \App\categories::find($cate_id);
         if(Sentinel::check()){
             if($this->user = Sentinel::getUser())
             {
@@ -260,7 +264,8 @@ class RecordController extends Controller
                 }
                 else//其他身份
                 {        
-                    $data = \App\categories_auth::where('categories_id',$cate_id)
+                    //查詢分類的主類別
+                    $data = \App\categories_auth::where('categories_id',$this->categories->parent_categories)
                                                 ->where('user_id',$this->user->id)
                                                 ->first();
 
@@ -269,7 +274,7 @@ class RecordController extends Controller
                     }
 
                     $AuthList = json_decode($data->permissions);
-                    if($AuthList->get('record') == true){
+                    if($AuthList->record == true){
                         return true;
                     }
                 }

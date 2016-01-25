@@ -11,7 +11,7 @@
                     <!-- 使用者資訊欄 -->
                     <div class="profile">
                         <div class="profile_pic">
-                        {!! Html::image('images\img.jpg','...',array('class' => 'img-circle profile_img')) !!}
+                        {!! Html::image(getUserimg(getUserID()),'...',array('class' => 'img-circle profile_img')) !!}
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
@@ -72,7 +72,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    {!! Html::image('images\img.jpg','...',array('class' => '')) !!}
+                                    {!! Html::image(getUserimg(getUserID()),'...',array('class' => '')) !!}
                                     {{ getUserName() }}
                                     <span class=" fa fa-angle-down"></span>
                                 </a>

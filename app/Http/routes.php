@@ -40,6 +40,9 @@ Route::group(['prefix' => '', 'namespace' => 'Web', 'middleware' => 'auth'], fun
 
     Route::post('/profile/Edit',['as' => 'profile.edit' ,'uses' => 'HomeController@profileEdit']);
 
+    //Service
+    Route::get('/getUserImg',['as' => 'web.getUserImg','uses' => 'HomeController@getUserimg']);
+
     ///
     /// 管理權限路由
     ///

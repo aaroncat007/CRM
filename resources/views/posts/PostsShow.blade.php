@@ -70,7 +70,8 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
-
+            <!-- 顯示驗證錯誤 -->
+            @include('include.errors')
   <div class="row">
     <div class="col-sm-10 col-sm-offset-1" id="logout">
             <div class="tab-content">
@@ -78,7 +79,7 @@
                     <ul class="media-list">
                       <li class="media">
                         <a class="pull-left" href="#">
-                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="profile">
+                          {!! Html::image(getUserimg($data->user_id),'profile',array('class' => 'media-object img-circle')) !!}
                         </a>
                         <div class="media-body">
                           <div class="well well-lg">
@@ -103,7 +104,7 @@
                       @foreach($reply as $r)
                       <li class="media">
                         <a class="pull-left" href="#">
-                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/kurafire/128.jpg" alt="profile">
+                          {!! Html::image(getUserimg($r->user_id),'profile',array('class' => 'media-object img-circle')) !!}
                         </a>
                         <div class="media-body">
                           <div class="well well-lg">

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Input;
 class PostsController extends Controller
 {
     private $user ;
+    private $categories;
     /**
      * Display a listing of the resource.
      *
@@ -20,24 +21,23 @@ class PostsController extends Controller
     public function index($id)
     {
        if(!isset($id)){
-            return redirect()->route('web.index');
+            return redirect()->route('web.index')->with('msg','查無此類別');
         }
 
         if($this->AuthAccess($id)){
-            $cateInfo = \App\categories::find($id);
 
-            if(!isset($cateInfo)){
+            if(!isset($this->categories)){
                 return redirect()->route('web.index');
             }
 
-            $cateParents = \App\categories::where('id',$cateInfo->parent_categories)->select('title')->first();
+            $cateParents = \App\categories::where('id',$this->categories->parent_categories)->select('title')->first();
 
-            $data = \App\posts::where('categories_id',$id)->get();
+            $data = \App\posts::where('categories_id',$id)->orderBy('updated_at', 'desc')->get();
 
-            return view('posts.PostsIndex',['cateInfo' => $cateInfo,'cateParents' => $cateParents,'data' => $data]);
+            return view('posts.PostsIndex',['cateInfo' => $this->categories,'cateParents' => $cateParents,'data' => $data]);
         }
 
-        return redirect()->route('web.index');
+        return redirect()->route('web.index')->with('msg','您沒有權限存取');
     }
 
     /**
@@ -57,11 +57,11 @@ class PostsController extends Controller
         $cateInfo = $data->categories;
 
         if(!isset($cateInfo)){
-            return back();
+            return back()->withErrors('查無此類別');
         }
 
         if(!$this->AuthAccess($cateInfo->id)){
-            return redirect()->route('web.index');
+            return back()->withErrors('您沒有權限存取');
         }
 
         $reply = $data->posts_reply;
@@ -109,9 +109,7 @@ class PostsController extends Controller
             return back()->withInput()->withErrors('您沒有權限查詢此類別');
         }
 
-        $cateInfo = \App\categories::find($cate_id);
-
-        if(!isset($cateInfo)){
+        if(!isset($this->categories)){
             return back()->withInput();
         }
 
@@ -146,21 +144,25 @@ class PostsController extends Controller
             return back();
         }
 
-        if(!$this->AuthAccess($id)){
-            return back()->withInput()->withErrors('您沒有權限查詢此類別');
+        $data = \App\Posts::find($id);
+
+        if(!isset($data))
+        {
+             return back()->withErrors('查無此類別');
         }
 
-        $data = \App\Posts::where('id',$id)->where('user_id',$this->user->id)->first();
-
-        $cateInfo = $data->categories;
-
-        if(!isset($cateInfo)){
-            return back();
+        if(!$this->AuthAccess($data->categories->id)){
+            return back()->withErrors('您沒有權限查詢此類別');
         }
 
-        $cateParents = \App\categories::where('id',$data->categories->parent_categories)->select('title')->first();
+        if($data->user_id != $this->user->id)
+        {
+            return back()->withErrors('您並非作者,沒有權限編輯');
+        }
 
-        return view('posts.PostsEdit',['data' => $data,'cateInfo' => $cateInfo , 'cateParents' => $cateParents]);
+        $cateParents = \App\categories::where('id',$this->categories->parent_categories)->select('title')->first();
+
+        return view('posts.PostsEdit',['data' => $data,'cateInfo' => $this->categories , 'cateParents' => $cateParents]);
     }
 
     /**
@@ -176,14 +178,21 @@ class PostsController extends Controller
         $title   = Input::get('title');
         $content    = Input::get('content');
 
-        if(!$this->AuthAccess($id)){
-            return back()->withInput()->withErrors('您沒有權限查詢此類別');
+
+        $data = \App\Posts::find($id);
+
+        if(!isset($data))
+        {
+             return back()->withErrors('查無此類別');
         }
 
-        $data = \App\Posts::where('id',$id)->where('user_id',$this->user->id)->first();
+        if(!$this->AuthAccess($data->categories->id)){
+            return back()->withErrors('您沒有權限查詢此類別');
+        }
 
-        if(!isset($data)){
-            return back()->withInput();
+        if($data->user_id != $this->user->id)
+        {
+            return back()->withErrors('您並非作者,沒有權限編輯');
         }
 
         $data->subject = $title;
@@ -204,13 +213,13 @@ class PostsController extends Controller
     {
         $id = Input::get('id');
 
-        if(!$this->AuthAccess($id)){
-            return Response()->json(['success' => false,'message' =>'您沒有權限']);
-        }
-
-        $data = \App\Posts::where('id',$id)->first();
+        $data = \App\Posts::find($id);
         if(!isset($data)){
             return Response()->json(['success' => false,'message' =>'查無此紀錄']);
+        }
+
+        if(!$this->AuthAccess($data->categories->id)){
+            return Response()->json(['success' => false,'message' =>'您沒有權限']);
         }
 
         if($data->user_id != $this->user->id){
@@ -400,6 +409,7 @@ class PostsController extends Controller
 
 
     private function AuthAccess($cate_id){
+        $this->categories = \App\categories::find($cate_id);
         if(Sentinel::check()){
             if($this->user = Sentinel::getUser())
             {
@@ -410,7 +420,8 @@ class PostsController extends Controller
                 }
                 else//其他身份
                 {        
-                    $data = \App\categories_auth::where('categories_id',$cate_id)
+                    //查詢分類的主類別
+                    $data = \App\categories_auth::where('categories_id',$this->categories->parent_categories)
                                                 ->where('user_id',$this->user->id)
                                                 ->first();
 
@@ -419,7 +430,8 @@ class PostsController extends Controller
                     }
 
                     $AuthList = json_decode($data->permissions);
-                    if($AuthList->get('posts') == true){
+
+                    if($AuthList->posts == true){
                         return true;
                     }
                 }

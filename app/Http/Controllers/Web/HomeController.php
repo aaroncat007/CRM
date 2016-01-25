@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 use Sentinel;
 use Activation;
 use Illuminate\Support\Facades\Input;
+use Image;
+use Response;
+use File;
 
 class HomeController extends Controller
 {
@@ -55,6 +58,8 @@ class HomeController extends Controller
 
         return back()->with('msg','密碼修改成功');
     }
+
+
 }
 
 ?>
