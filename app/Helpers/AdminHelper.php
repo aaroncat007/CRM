@@ -63,7 +63,7 @@ if ( ! function_exists('breadcrumbs'))
      $route = Route::currentRouteName();  
      // get after last dot  
      $index = substr($route, 0, strrpos($route, '.') + 1) . 'index';  
-     $breadcrumbs = '<ol class="breadcrumb">';  
+     $breadcrumbs = '<ol class="breadcrumb" style="margin-bottom:0px !important;">';  
      $breadcrumbs .= '<li><i class="fa fa-home"></i> <a href="'.route('web.index').'">首頁</a></li>';  
 
      // if not admin root  

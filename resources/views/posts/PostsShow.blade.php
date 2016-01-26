@@ -78,7 +78,11 @@
                 <div class="tab-pane active" id="comments-logout">                
                     <ul class="media-list">
                       <li class="media">
-                        <a class="pull-left" href="#">
+                        @if($data->user_id == $userID)
+                            <a class="pull-right" href="#">
+                        @else
+                            <a class="pull-left" href="#">
+                        @endif
                           {!! Html::image(getUserimg($data->user_id),'profile',array('class' => 'media-object img-circle')) !!}
                         </a>
                         <div class="media-body">
@@ -103,7 +107,11 @@
                       </li> 
                       @foreach($reply as $r)
                       <li class="media">
-                        <a class="pull-left" href="#">
+                        @if($r->user_id == $userID)
+                            <a class="pull-right" href="#">
+                        @else
+                            <a class="pull-left" href="#">
+                        @endif
                           {!! Html::image(getUserimg($r->user_id),'profile',array('class' => 'media-object img-circle')) !!}
                         </a>
                         <div class="media-body">

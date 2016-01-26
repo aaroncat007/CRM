@@ -87,7 +87,7 @@
                         <!--/使用者資訊-->
                     </nav>
                         <!--導航列-->
-                        <ol class="breadcrumb">
+                        <ol class="breadcrumb" style="margin-bottom:0px !important;">
                         {!! breadcrumbs() !!}
                         </ol>
                         <!--/導航列-->
