@@ -29,11 +29,11 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">啟用</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="btn-group" id="gender" data-toggle="buttons">
-                                <label class="btn btn-default {{ $userData->activations->completed === 0 ? 'active' : '' }}" data-toggle-passive-class="btn-default" data-toggle-class="btn-primary">
-                                    <input name="activated" type="radio" {{ $userData->activations->completed === 0 ? 'checked' : '' }} value="0" data-parsley-id="6649" data-parsley-multiple="gender"> &nbsp; 停用 &nbsp;
+                                <label class="btn btn-default {{ $userData->activations->completed == 0 ? 'active' : '' }}" data-toggle-passive-class="btn-default" data-toggle-class="btn-primary">
+                                    <input name="activated" type="radio" {{ $userData->activations->completed == 0 ? 'checked="checked"' : '' }} value="0" data-parsley-id="6649" data-parsley-multiple="gender"> &nbsp; 停用 &nbsp;
                                 </label>
-                                <label class="btn btn-primary {{ $userData->activations->completed === 1 ? 'active' : '' }}" data-toggle-passive-class="btn-default" data-toggle-class="btn-primary">
-                                    <input name="activated" type="radio" {{ $userData->activations->completed === 1 ? 'checked' : '' }} value="1" data-parsley-id="6649" data-parsley-multiple="gender"> 啟用
+                                <label class="btn btn-primary {{ $userData->activations->completed == 1 ? 'active' : '' }}" data-toggle-passive-class="btn-default" data-toggle-class="btn-primary">
+                                    <input name="activated" type="radio" {{ $userData->activations->completed == 1 ? 'checked="checked"' : '' }} value="1" data-parsley-id="6649" data-parsley-multiple="gender"> 啟用
                                 </label>
                             </div>
                         </div>

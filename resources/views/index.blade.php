@@ -13,7 +13,7 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="dashboard_graph">
 
-                            {!! Html::image('/images/welcome.png','profile',array('class' => 'center-block','height' => '720px')) !!}
+                            {!! Html::image('/images/welcome.png','profile',array('class' => 'center-block','height' => '480px')) !!}
 
                             <div class="clearfix"></div>
                         </div>

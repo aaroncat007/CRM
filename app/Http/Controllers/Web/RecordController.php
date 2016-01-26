@@ -38,7 +38,7 @@ class RecordController extends Controller
 
             $cateParents = \App\categories::where('id',$cateInfo->parent_categories)->select('title')->first();
 
-            $data = \App\Record::where('categories_id',$id)
+            $data = \App\record::where('categories_id',$id)
                                 ->where('user_id',$this->user->id)
                                 ->select('id','title','content','updated_at')
                                 ->orderBy('created_at', 'desc')
@@ -69,7 +69,7 @@ class RecordController extends Controller
 
         if($this->AuthAccess($id)){
 
-            $data = \App\Record::where('id',$id)
+            $data = \App\record::where('id',$id)
                                 ->where('user_id',$this->user->id)
                                 ->first();
 
@@ -157,7 +157,7 @@ class RecordController extends Controller
             return back();
         }
 
-        $data = \App\Record::where('id',$id)->first();
+        $data = \App\record::where('id',$id)->first();
 
         if(!isset($data)){
             return back()->withInput()->withErrors('查無此資料');
@@ -197,7 +197,7 @@ class RecordController extends Controller
         $title   = Input::get('title');
         $content    = Input::get('content');
 
-        $data = \App\Record::where('id',$id)->first();
+        $data = \App\record::where('id',$id)->first();
 
         if(!isset($data)){
             return back()->withInput()->withErrors('查無此資料');
@@ -231,7 +231,7 @@ class RecordController extends Controller
     {
         $id = Input::get('id');
 
-        $data = \App\Record::where('id',$id)->first();
+        $data = \App\record::where('id',$id)->first();
         if(!isset($data)){
             return Response()->json(['success' => false,'message' =>'查無此紀錄']);
         }

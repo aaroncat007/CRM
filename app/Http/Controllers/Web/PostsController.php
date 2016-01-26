@@ -52,7 +52,7 @@ class PostsController extends Controller
             return back();
         }
 
-        $data = \App\Posts::where('id',$id)->first();
+        $data = \App\posts::where('id',$id)->first();
 
         $cateInfo = $data->categories;
 
@@ -144,7 +144,7 @@ class PostsController extends Controller
             return back();
         }
 
-        $data = \App\Posts::find($id);
+        $data = \App\posts::find($id);
 
         if(!isset($data))
         {
@@ -179,7 +179,7 @@ class PostsController extends Controller
         $content    = Input::get('content');
 
 
-        $data = \App\Posts::find($id);
+        $data = \App\posts::find($id);
 
         if(!isset($data))
         {
@@ -213,7 +213,7 @@ class PostsController extends Controller
     {
         $id = Input::get('id');
 
-        $data = \App\Posts::find($id);
+        $data = \App\posts::find($id);
         if(!isset($data)){
             return Response()->json(['success' => false,'message' =>'查無此紀錄']);
         }

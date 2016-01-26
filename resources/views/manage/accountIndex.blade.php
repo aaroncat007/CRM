@@ -99,7 +99,7 @@
                         </td>
                         <td class=" ">{{ $data->last_login or '無' }}</td>
                         <td class=" ">{{ $data->ip_address or '無' }}</td>
-                        <td class="a-right a-right ">{{ $data->activations->completed === 1 ? '正常':'停用' }}</td>
+                        <td class="a-right a-right ">{{ $data->activations->completed == 1 ? '正常':'停用' }}</td>
                         <td class=" last">
                             <button class="btn btn-default btnEdit" data-id="{{ $data->id }}" type="button">編輯</button>
                             <button class="btn btn-danger btnDel" data-id="{{ $data->id }}" type="button">刪除</button>

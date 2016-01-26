@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Sentinel;
 use Activation;
+use File;
 use Illuminate\Support\Facades\Input;
 
 class ManageController extends Controller
@@ -125,6 +126,12 @@ class ManageController extends Controller
 
         //修正啟用,停用
         $act = \App\activations::where('user_id',$id)->update(['completed' => $activated]);
+
+        //刪除快取檔案
+        $filePath = public_path('images/icon/'.$id.'.png');
+        if(File::exists($filePath)){
+            File::delete($filePath);
+        }
 
         return Response()->json(['success' => true,'message' => 'Account was Update.']);
 
