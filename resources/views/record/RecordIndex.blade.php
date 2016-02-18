@@ -62,8 +62,9 @@
         <div class="x_panel">
             <div class="x_title">
                 <ul class="nav navbar-right panel_toolbox">
-                    <a id="btnAdd" class="btn btn-info btn-sm" href="{{route('record.create')}}/{{$cateInfo->id}}" type="button"><i class="fa fa-user"></i> 新增</a><li>
-                </li>
+                @if(IsAdmin())
+                    <a id="btnAdd" class="btn btn-info btn-sm" href="{{route('record.create')}}/{{$cateInfo->id}}" type="button"><i class="fa fa-user"></i> 新增</a>
+                @endif
                     <!--
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>

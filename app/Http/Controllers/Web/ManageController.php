@@ -351,7 +351,7 @@ public function CategoriesAuthDoAdd(){
         'user_id' => $uid,
         'permissions' => json_encode(array(  
                  'posts'       => true,  
-                 'record'      => false,  
+                 'record'      => true,  
                 ))
     ];
 

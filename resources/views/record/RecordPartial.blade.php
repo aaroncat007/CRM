@@ -23,6 +23,6 @@
     <div class="view-mail">
         <!-- 顯示驗證錯誤 -->
         @include('include.errors')
-        {!! $data->content !!}
+        {!! html_entity_decode($data->content) !!}
     </div>
 </div>

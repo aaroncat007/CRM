@@ -87,7 +87,7 @@
                         </a>
                         <div class="media-body">
                           <div class="well well-lg">
-                            @if($data->user_id == $userID)
+                            @if($data->user_id == $userID && false)
                               <div class="pull-right">
                                 <a class="btn btn-info" href="{{route('posts.edit') .'/'.$data->id}}">編輯</a>
                                 <button class="btn btnDelPost btn-danger" data-id="{{$data->id}}">刪除</button>
@@ -116,7 +116,7 @@
                         </a>
                         <div class="media-body">
                           <div class="well well-lg">
-                          @if($r->user_id == $userID)
+                          @if($r->user_id == $userID && false)
                               <div class="pull-right">
                                 <a class="btn btn-info" href="{{route('posts.reply.edit') .'/'.$r->id}}">編輯</a>
                                 <button class="btn btn-danger btnDelReply" data-id="{{$r->id}}">刪除</button>

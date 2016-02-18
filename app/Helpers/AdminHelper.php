@@ -48,6 +48,25 @@
   }
  }
 
+  /**  
+  * Return Is Admin 
+  *  
+  * @return boolean  
+  */  
+ if( ! function_exists('IsAdmin'))
+ {
+  function IsAdmin()
+  {
+    if(Sentinel::check())
+    {
+      if(Sentinel::inRole('SuperAdmin') || Sentinel::inRole('Admin')){
+        return true;
+      }
+    }
+
+    return false;
+  }
+ }
 
 
 

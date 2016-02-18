@@ -45,7 +45,7 @@ class RecordController extends Controller
                                 ->get();
 
             foreach ($data as $d) {
-                $d->content = mb_substr(strip_tags($d->content),0,100);
+                $d->content = mb_substr(strip_tags(html_entity_decode($d->content)),0,100);
             }
 
             return view('record.RecordIndex',['cateInfo' => $cateInfo,'cateParents' => $cateParents,'data' => $data]);
